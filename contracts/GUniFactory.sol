@@ -29,6 +29,8 @@ contract GUniFactory is GUniFactoryStorage, IGUniFactory {
     /// forever be associated with the G-UNI pool as it's `deployer`
     /// @param tokenA one of the tokens in the uniswap pair
     /// @param tokenB the other token in the uniswap pair
+    /// @param vaultA the vault for longing tokenA
+    /// @param vaultB the vault for longing tokenB
     /// @param uniFee fee tier of the uniswap pair
     /// @param managerFee proportion of earned fees that go to pool manager in Basis Points
     /// @param lowerTick initial lower bound of the Uniswap V3 position
@@ -37,6 +39,8 @@ contract GUniFactory is GUniFactoryStorage, IGUniFactory {
     function createManagedPool(
         address tokenA,
         address tokenB,
+        address vaultA,
+        address vaultB,
         uint24 uniFee,
         uint16 managerFee,
         int24 lowerTick,
@@ -46,6 +50,8 @@ contract GUniFactory is GUniFactoryStorage, IGUniFactory {
             _createPool(
                 tokenA,
                 tokenB,
+                vaultA,
+                vaultB,
                 uniFee,
                 managerFee,
                 lowerTick,
@@ -66,6 +72,8 @@ contract GUniFactory is GUniFactoryStorage, IGUniFactory {
     function createPool(
         address tokenA,
         address tokenB,
+        address vaultA,
+        address vaultB,
         uint24 uniFee,
         int24 lowerTick,
         int24 upperTick
@@ -74,6 +82,8 @@ contract GUniFactory is GUniFactoryStorage, IGUniFactory {
             _createPool(
                 tokenA,
                 tokenB,
+                vaultA,
+                vaultB,
                 uniFee,
                 0,
                 lowerTick,
@@ -85,6 +95,8 @@ contract GUniFactory is GUniFactoryStorage, IGUniFactory {
     function _createPool(
         address tokenA,
         address tokenB,
+        address vaultA,
+        address vaultB,
         uint24 uniFee,
         uint16 managerFee,
         int24 lowerTick,
@@ -95,7 +107,7 @@ contract GUniFactory is GUniFactoryStorage, IGUniFactory {
 
         pool = address(new EIP173Proxy(poolImplementation, address(this), ""));
 
-        string memory name = "Gelato Uniswap LP";
+        string memory name = "Gelato UniVault LP";
         try this.getTokenName(token0, token1) returns (string memory result) {
             name = result;
         } catch {} // solhint-disable-line no-empty-blocks

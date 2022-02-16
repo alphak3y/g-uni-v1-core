@@ -53,6 +53,18 @@ contract GUniPool is
         uint128 liquidityAfter
     );
 
+    event DepositVaultA(
+        address vaultA,
+        uint128 liquidityBefore,
+        uint128 liquidityAfter
+    );
+
+    event DepositVaultB(
+        address vaultB,
+        uint128 liquidityBefore,
+        uint128 liquidityAfter
+    );
+
     event FeesEarned(uint256 feesEarned0, uint256 feesEarned1);
 
     // solhint-disable-next-line max-line-length
