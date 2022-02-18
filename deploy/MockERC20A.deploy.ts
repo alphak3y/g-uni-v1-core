@@ -17,17 +17,18 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
 
-  await deploy("MockERC20", {
+  const result1 = await deploy("MockERC20A", {
     from: deployer,
   });
+
+  console.log("MockERC20A deployed: ", result1.address);
 };
 
 func.skip = async (hre: HardhatRuntimeEnvironment) => {
   const shouldSkip =
     hre.network.name === "mainnet" ||
     hre.network.name === "polygon" ||
-    hre.network.name === "optimism" ||
-    hre.network.name === "goerli";
+    hre.network.name === "optimism";
   return shouldSkip ? true : false;
 };
 

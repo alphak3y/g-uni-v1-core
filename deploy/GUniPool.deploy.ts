@@ -18,19 +18,18 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
   const addresses = getAddresses(hre.network.name);
-
-  await deploy("GUniPool", {
+  const result = await deploy("GUniPool", {
     from: deployer,
     args: [addresses.Gelato],
   });
+  console.log("GUniPool deployed: ", result.address);
 };
 
 func.skip = async (hre: HardhatRuntimeEnvironment) => {
   const shouldSkip =
     hre.network.name === "mainnet" ||
     hre.network.name === "polygon" ||
-    hre.network.name === "optimism" ||
-    hre.network.name === "goerli";
+    hre.network.name === "optimism";
   return shouldSkip ? true : false;
 };
 

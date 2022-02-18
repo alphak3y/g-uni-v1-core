@@ -9,7 +9,7 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
     hre.network.name === "polygon"
   ) {
     console.log(
-      `!! Deploying SwapTest to ${hre.network.name}. Hit ctrl + c to abort`
+      `!! Deploying MockERC20 to ${hre.network.name}. Hit ctrl + c to abort`
     );
     await new Promise((r) => setTimeout(r, 20000));
   }
@@ -17,10 +17,11 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
 
-  await deploy("SwapTest", {
+  const result2 = await deploy("MockERC20B", {
     from: deployer,
-    args: [],
   });
+
+  console.log("MockERC20B deployed: ", result2.address);
 };
 
 func.skip = async (hre: HardhatRuntimeEnvironment) => {
@@ -31,6 +32,6 @@ func.skip = async (hre: HardhatRuntimeEnvironment) => {
   return shouldSkip ? true : false;
 };
 
-func.tags = ["SwapTest"];
+func.tags = ["MockERC20"];
 
 export default func;

@@ -19,32 +19,18 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
   const { deployer } = await getNamedAccounts();
   const addresses = getAddresses(hre.network.name);
 
-  await deploy("GUniFactory", {
+  const result = await deploy("GUniFactory", {
     from: deployer,
-    proxy: {
-      proxyContract: "EIP173Proxy",
-      owner: addresses.GelatoDevMultiSig,
-      execute: {
-        init: {
-          methodName: "initialize",
-          args: [
-            addresses.GUniImplementation,
-            addresses.GelatoDevMultiSig,
-            addresses.GelatoDevMultiSig,
-          ],
-        },
-      },
-    },
     args: [addresses.UniswapV3Factory],
   });
+  console.log("GUniFactory deployed: ", result.address);
 };
 
 func.skip = async (hre: HardhatRuntimeEnvironment) => {
   const shouldSkip =
     hre.network.name === "mainnet" ||
     hre.network.name === "polygon" ||
-    hre.network.name === "optimism" ||
-    hre.network.name === "goerli";
+    hre.network.name === "optimism";
   return shouldSkip ? true : false;
 };
 
