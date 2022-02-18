@@ -18,3 +18,10 @@ contract MockERC20B is ERC20Upgradeable {
         _mint(msg.sender, 100000e18);
     }
 }
+
+contract MockERC20 is ERC20Upgradeable {
+    constructor() {
+        __ERC20_init("", "MOCK");
+        _mint(msg.sender, 100000e18);
+    }
+}
